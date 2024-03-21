@@ -3,5 +3,6 @@ public class test2 {
     public static void main(String[] args) {
         //test
         //test2
+        //이걸 내가 바꾸려고 하는건데. 일단 충돌 안나면 어떻게 되나 봅시다.
     }
 }
