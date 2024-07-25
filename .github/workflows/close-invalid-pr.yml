@@ -10,10 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Fetch base branch
-        run: git fetch origin ${{ github.event.pull_request.base.ref }}
+        uses: actions/checkout@v3
 
       - name: Check for changes in .github directory
         id: check_changes
@@ -25,6 +22,9 @@ jobs:
             echo "changes_detected=false" >> $GITHUB_ENV
           fi
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+        
       - name: Comment and close PR if unauthorized changes detected
         if: env.changes_detected == 'true'
         run: |
