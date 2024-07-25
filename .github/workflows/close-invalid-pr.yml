@@ -38,4 +38,4 @@ jobs:
           
       - name: Get changed files
         run: |
-          echo env.changes_detected
+          echo ${{ env.changes_detected }}
