@@ -15,7 +15,7 @@ jobs:
       - name: List changed files
         id: changed-files
         run: |
-          git fetch origin main
+          git fetch origin master
           git checkout ${{ github.event.pull_request.head.ref }}
           CHANGED_FILES=$(git diff --name-only origin/master ${{ github.sha }})
           echo "Changed Files: $CHANGED_FILES"
