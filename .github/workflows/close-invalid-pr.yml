@@ -11,15 +11,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Fetch base branch
-        run: git fetch origin ${{ github.event.pull_request.base.ref }}
         
       - name: Check for changes in .github directory
         id: check_changes
         run: |
-          set -e
-          if git diff --name-only origin/${{ github.event.pull_request.base.ref }}... | grep -q '^.github/'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^.github/'; then
             echo "changes_detected=true" >> $GITHUB_ENV
           else
             echo "changes_detected=false" >> $GITHUB_ENV
@@ -33,6 +29,6 @@ jobs:
         run: |
           gh pr review ${{ github.event.pull_request.number }} --reject --body "This PR modifies files in the .github directory, which is not allowed. Please remove these changes."
           gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
-          # gh pr close ${{ github.event.pull_request.number }}
+          gh pr close ${{ github.event.pull_request.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
