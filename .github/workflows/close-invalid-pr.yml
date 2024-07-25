@@ -24,8 +24,9 @@ jobs:
       - name: Install GitHub CLI
         run: sudo apt-get install gh -y
 
-      - name: Install GitHub CLI
+      - name: check
         run: |
+          echo "잘 나옴?"
           echo $GITHUB_ENV
         
       - name: Comment and close PR if unauthorized changes detected
