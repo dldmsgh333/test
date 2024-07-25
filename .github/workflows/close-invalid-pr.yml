@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: List changed files
+        id: changed-files
+        run: |
+          git fetch origin main
+          git checkout ${{ github.event.pull_request.head.ref }}
+          CHANGED_FILES=$(git diff --name-only origin/master ${{ github.sha }})
+          echo "Changed Files: $CHANGED_FILES"
         
       - name: Check for changes in .github directory
         id: check_changes
@@ -28,9 +36,6 @@ jobs:
         run: |
           echo git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           echo ${{ env.changes_detected }}
-          
-      - name: List changed files
-        run: git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
         
       - name: Comment and close PR if unauthorized changes detected
         if: ${{ env.changes_detected == 'true' }}
