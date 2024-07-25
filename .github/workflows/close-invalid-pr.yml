@@ -26,9 +26,11 @@ jobs:
 
       - name: check
         run: |
-          echo "잘 나옴?"
           echo git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           echo ${{ env.changes_detected }}
+          
+      - name: List changed files
+        run: git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
         
       - name: Comment and close PR if unauthorized changes detected
         if: ${{ env.changes_detected == 'true' }}
