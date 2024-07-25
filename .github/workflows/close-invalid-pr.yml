@@ -1,0 +1,23 @@
+name: Close PRs modifying .github directory
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Check for changes in .github directory
+      run: |
+        # Add a comment to the pull request
+        gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
+
+        # Close the pull request
+        gh pr close ${{ github.event.pull_request.number }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
