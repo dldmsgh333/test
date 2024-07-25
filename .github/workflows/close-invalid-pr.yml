@@ -14,10 +14,16 @@ jobs:
 
     - name: Check for changes in .github directory
       run: |
-        # Add a comment to the pull request
-        gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
+        # Check if there are changes in the .github directory
+        if git diff --name-only HEAD^ HEAD | grep -q '^.github/'; then
+          echo "Unauthorized changes to .github directory detected."
 
-        # Close the pull request
-        gh pr close ${{ github.event.pull_request.number }}
+          # Add a comment to the pull request
+          gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
+
+          # Close the pull request
+          gh pr close ${{ github.event.pull_request.number }}
+        else
+          echo "No unauthorized changes detected."
     env:
       GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
