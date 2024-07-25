@@ -27,10 +27,11 @@ jobs:
       - name: check
         run: |
           echo "잘 나옴?"
+          echo git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
           echo ${{ env.changes_detected }}
         
       - name: Comment and close PR if unauthorized changes detected
-        if: env.changes_detected == 'true'
+        if: ${{ env.changes_detected }} == 'true'
         run: |
           gh pr review ${{ github.event.pull_request.number }} --reject --body "This PR modifies files in the .github directory, which is not allowed. Please remove these changes."
           gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
