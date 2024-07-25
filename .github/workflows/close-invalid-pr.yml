@@ -15,7 +15,7 @@ jobs:
       - name: Check for changes in .github directory
         id: check_changes
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^.github/'; then
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q '^.github/'; then
             echo "changes_detected=true" >> $GITHUB_ENV
           else
             echo "changes_detected=false" >> $GITHUB_ENV
@@ -27,7 +27,7 @@ jobs:
       - name: check
         run: |
           echo "잘 나옴?"
-          echo git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+          echo git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           echo ${{ env.changes_detected }}
         
       - name: Comment and close PR if unauthorized changes detected
