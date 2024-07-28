@@ -25,6 +25,8 @@ jobs:
           # Get the list of changed files
           CHANGED_FILES=$(git diff --name-only origin/$BASE_BRANCH $HEAD_BRANCH)
           echo "Changed Files: $CHANGED_FILES"
+          echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
+          echo "HEAD_BRANCH=$HEAD_BRANCH" >> $GITHUB_ENV
         shell: bash
         
       - name: Check for changes in .github directory
@@ -35,7 +37,21 @@ jobs:
           else
             echo "changes_detected=false" >> $GITHUB_ENV
           fi
-          
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: Comment and close PR if unauthorized changes detected
+        if: ${{ env.changes_detected == 'true' }}
+        run: |
+          gh pr review ${{ github.event.pull_request.number }} --reject --body "This PR modifies files in the .github directory, which is not allowed. Please remove these changes."
+          gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
+          # gh pr close ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Get changed files
         run: |
+          echo ${{ env.BASE_BRANCH }}
+          echo ${{ env.HEAD_BRANCH }}
           echo ${{ env.changes_detected }}
