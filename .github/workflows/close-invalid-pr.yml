@@ -48,10 +48,7 @@ jobs:
         if: ${{ env.changes_detected == 'true' }}
         run: |  
           gh pr review ${{ github.event.pull_request.number }} -r --body "This PR modifies files in the .github directory, which is not allowed. Please remove these changes."
-          gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
           gh pr close ${{ github.event.pull_request.number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           
       - name: print env
         run: |
