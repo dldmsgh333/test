@@ -20,7 +20,9 @@ jobs:
         run: |
           BASE_BRANCH="master"
           HEAD_BRANCH=$(git symbolic-ref --short HEAD)
-          
+
+          echo $BASE_BRANCH
+          echo $MASTER_BRANCH
           # Check if PR already exists
           PR_EXISTS=$(gh pr list --head $HEAD_BRANCH --base $BASE_BRANCH --state open --json number --jq '.[0].number')
 
