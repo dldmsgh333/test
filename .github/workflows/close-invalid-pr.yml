@@ -44,7 +44,8 @@ jobs:
       - name: Comment and close PR if unauthorized changes detected
         if: ${{ env.changes_detected == 'true' }}
         run: |
-          gh auth login --with-token < ${{ secrets.GH_TOKEN }}
+          # gh auth login --with-token < ${{ secrets.GH_TOKEN }}
+          echo ${{ secrets.GH_TOKEN }} | gh auth login --with-token
           gh pr review ${{ github.event.pull_request.number }} -r --body "This PR modifies files in the .github directory, which is not allowed. Please remove these changes."
           gh pr comment ${{ github.event.pull_request.number }} --body "This PR modifies files in the .github directory, which is not allowed. Closing the PR automatically."
           gh pr close ${{ github.event.pull_request.number }}
