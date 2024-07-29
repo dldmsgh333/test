@@ -51,7 +51,7 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           
-      - name: Get changed files
+      - name: print env
         run: |
           echo ${{ env.BASE_BRANCH }}
           echo ${{ env.HEAD_BRANCH }}
