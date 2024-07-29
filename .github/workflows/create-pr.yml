@@ -18,7 +18,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          BASE_BRANCH="main"
+          BASE_BRANCH="master"
           HEAD_BRANCH=$(git symbolic-ref --short HEAD)
           
           # Check if PR already exists
