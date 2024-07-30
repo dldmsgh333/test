@@ -2,8 +2,6 @@ name: Create Pull Request
 
 on:
   push:
-    branches:
-      - '**'  # 모든 브랜치에 대해 작동하도록 설정
     branches-ignore:
      - 'master'     # master 브랜치는 제외
      - 'main'
