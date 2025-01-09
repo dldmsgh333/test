@@ -1,5 +1,1 @@
-/.github/* @dldmsgh333
-이건 이제 push도 안되는건가?
-111와 드디어 되는건가..ㅋㅋㅋ
-zzzzzz
-zzzzzz
+테스트 2에서 수정
